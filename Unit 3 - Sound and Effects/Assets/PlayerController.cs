@@ -17,26 +17,34 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
 
     private Rigidbody rb;
+    private Animator animator;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
     private void Start()
     {
         instance = this;
     }
-    private void FixedUpdate()
+    private void Update()
     {
-        CheckGround(); 
-        GetInput();
+        CheckInput();
+        CheckGround();
+        UpdateAnimation();
     }
-    private void GetInput()
+    private void CheckInput()
     {
-        if (Input.GetKeyDown(KeyCode.W) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.W) && isGrounded && !gameOver)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            Jump();
         }
+    }
+    private void Jump()
+    {
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        animator.SetTrigger("Jump_trig");
     }
     private void OnCollisionEnter(Collision other)
     {
@@ -45,6 +53,11 @@ public class PlayerController : MonoBehaviour
             gameOver = true;
             Debug.Log("Game Over");
         }
+    }
+    private void UpdateAnimation()
+    {
+        animator.SetBool("Death_b", gameOver);
+        animator.SetInteger("DeathType_int", 1);
     }
     private void CheckGround()
     {
