@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool gameOver = false;
 
     [Header("Unity stuff")]
+    public AudioClip jumpSound;
+    public AudioClip crashSound;
     public ParticleSystem explosionParticle;
     public ParticleSystem dirtParticle;
     public LayerMask whatIsGround;
@@ -20,11 +22,13 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
     private Animator animator;
+    private AudioSource audioSource;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
     private void Start()
     {
@@ -38,7 +42,7 @@ public class PlayerController : MonoBehaviour
     }
     private void CheckInput()
     {
-        if (Input.GetKeyDown(KeyCode.W) && isGrounded && !gameOver)
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && isGrounded && !gameOver)
         {
             Jump();
         }
@@ -48,6 +52,7 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         animator.SetTrigger("Jump_trig");
         dirtParticle.Stop();
+        audioSource.PlayOneShot(jumpSound, 1f);
     }
     private void OnCollisionEnter(Collision other)
     {
@@ -56,6 +61,7 @@ public class PlayerController : MonoBehaviour
             gameOver = true;
             explosionParticle.Play();
             dirtParticle.Stop();
+            audioSource.PlayOneShot(crashSound, 1f);
         }
     }
     private void UpdateAnimation()
