@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -12,16 +11,13 @@ public class SpawnManager : MonoBehaviour
     
     void Start()
     {
-        StartCoroutine(SpawnObstacle());
+        InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
     }
-    private IEnumerator SpawnObstacle()
+    private void SpawnObstacle()
     {
-        yield return new WaitForSeconds(startDelay);
-
-        GameObject prefab = (GameObject)Instantiate(obstaclePrefab, spawnPos, obstaclePrefab.transform.rotation);
-        Destroy(prefab, 3f);
-
-        yield return new WaitForSeconds(repeatRate);
+        if (!PlayerController.instance.gameOver)
+        {
+            Instantiate(obstaclePrefab, spawnPos, obstaclePrefab.transform.rotation);
+        }
     }
-
 }
