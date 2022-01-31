@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool gameOver = false;
 
     [Header("Unity stuff")]
+    public ParticleSystem explosionParticle;
+    public ParticleSystem dirtParticle;
     public LayerMask whatIsGround;
     public Transform groundCheck;
 
@@ -45,13 +47,15 @@ public class PlayerController : MonoBehaviour
     {
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         animator.SetTrigger("Jump_trig");
+        dirtParticle.Stop();
     }
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Obstacle"))
         {
             gameOver = true;
-            Debug.Log("Game Over");
+            explosionParticle.Play();
+            dirtParticle.Stop();
         }
     }
     private void UpdateAnimation()
@@ -62,6 +66,11 @@ public class PlayerController : MonoBehaviour
     private void CheckGround()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, whatIsGround);
+        
+        if (!isGrounded && !gameOver)
+        {
+            dirtParticle.Play();
+        }
     }
     private void OnDrawGizmos()
     {
