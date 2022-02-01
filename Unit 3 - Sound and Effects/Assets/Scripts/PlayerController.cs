@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Variables")]
     public float jumpForce = 10f;
+    public float doubleJumpForce = 10f;
     public float groundCheckRadius;
 
     [HideInInspector] public bool gameOver = false;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheck;
 
     private bool isGrounded;
+    private bool isDoubleJumpUsed = false;
 
     private Rigidbody rb;
     private Animator animator;
@@ -46,13 +48,26 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+        else if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && !isGrounded && !isDoubleJumpUsed && !gameOver)
+        {
+            DoubleJump();
+        }
     }
     private void Jump()
     {
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        rb.velocity = Vector3.up * jumpForce;
         animator.SetTrigger("Jump_trig");
         dirtParticle.Stop();
         audioSource.PlayOneShot(jumpSound, 1f);
+        isDoubleJumpUsed = false;
+    }
+    private void DoubleJump()
+    {
+        rb.velocity = Vector3.up * jumpForce;
+        animator.Play("Running_Jump", 3, 0f);
+        dirtParticle.Stop();
+        audioSource.PlayOneShot(jumpSound, 1f);
+        isDoubleJumpUsed = true;
     }
     private void OnCollisionEnter(Collision other)
     {
