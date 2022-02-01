@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float doubleJumpForce = 10f;
     public float groundCheckRadius;
 
+    [HideInInspector] public bool isRunning = false;
     [HideInInspector] public bool gameOver = false;
 
     [Header("Unity stuff")]
@@ -52,6 +53,24 @@ public class PlayerController : MonoBehaviour
         {
             DoubleJump();
         }
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.D))
+        {
+            Run();
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.D))
+        {
+            ResetSpeed();
+        }
+    }
+    private void Run()
+    {
+        animator.SetFloat("runMultiplier", 2f);
+        isRunning = true;
+    }
+    private void ResetSpeed()
+    {
+        animator.SetFloat("runMultiplier", 1f);
+        isRunning = false;
     }
     private void Jump()
     {
@@ -63,7 +82,7 @@ public class PlayerController : MonoBehaviour
     }
     private void DoubleJump()
     {
-        rb.velocity = Vector3.up * jumpForce;
+        rb.velocity = Vector3.up * doubleJumpForce;
         animator.Play("Running_Jump", 3, 0f);
         dirtParticle.Stop();
         audioSource.PlayOneShot(jumpSound, 1f);
