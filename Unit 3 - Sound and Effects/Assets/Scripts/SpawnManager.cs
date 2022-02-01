@@ -5,9 +5,10 @@ public class SpawnManager : MonoBehaviour
     public float startDelay;
     public float repeatRate;
 
-    public GameObject obstaclePrefab;
+    public GameObject[] obstaclePrefabs;
 
-    private Vector3 spawnPos = new Vector3(25f, 0, 0);
+    private float maxSpawnPos = 25f;
+    private float minSpawnPos = 20f;
     
     void Start()
     {
@@ -17,7 +18,13 @@ public class SpawnManager : MonoBehaviour
     {
         if (!PlayerController.instance.gameOver)
         {
-            Instantiate(obstaclePrefab, spawnPos, obstaclePrefab.transform.rotation);
+            Vector3 spawnPoint = new Vector3(Random.Range(minSpawnPos, maxSpawnPos), 0, transform.position.z);
+            Obstacle(spawnPoint);
         }
+    }
+    private GameObject Obstacle(Vector3 point)
+    {
+        int obstacleIndex = Random.Range(0, obstaclePrefabs.Length);
+        return Instantiate(obstaclePrefabs[obstacleIndex], point, obstaclePrefabs[obstacleIndex].transform.rotation);
     }
 }

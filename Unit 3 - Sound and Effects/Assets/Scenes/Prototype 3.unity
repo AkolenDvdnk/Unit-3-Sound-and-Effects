@@ -645,8 +645,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startDelay: 2
   repeatRate: 2
-  obstaclePrefab: {fileID: 2725178553122795206, guid: ee5076298e479f545a6ec4b6892610c4,
-    type: 3}
+  obstaclePrefabs:
+  - {fileID: 3985959845643416784, guid: 14ed81995cb0cc94797f8e4d3e04b6e4, type: 3}
+  - {fileID: 1529701800504339922, guid: d0f8e41c620ca9a4698b818f4ee472af, type: 3}
+  - {fileID: 2725178553122795206, guid: ee5076298e479f545a6ec4b6892610c4, type: 3}
+  - {fileID: 5216561322824389993, guid: 08430e2ee52deb348a0b7e3f59ca9ba9, type: 3}
 --- !u!4 &1700794199
 Transform:
   m_ObjectHideFlags: 0
