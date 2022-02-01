@@ -7,8 +7,8 @@ public class SpawnManager : MonoBehaviour
 
     public GameObject[] obstaclePrefabs;
 
-    private float maxSpawnPos = 25f;
-    private float minSpawnPos = 20f;
+    private float maxSpawnPos = 30f;
+    private float minSpawnPos = 25f;
     
     void Start()
     {

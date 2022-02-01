@@ -12,11 +12,13 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool isRunning = false;
     [HideInInspector] public bool gameOver = false;
 
-    [Header("Unity stuff")]
+    [Header("Source")]
     public AudioClip jumpSound;
     public AudioClip crashSound;
     public ParticleSystem explosionParticle;
     public ParticleSystem dirtParticle;
+
+    [Header("Unity stuff")]
     public LayerMask whatIsGround;
     public Transform groundCheck;
 
@@ -64,7 +66,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Run()
     {
-        animator.SetFloat("runMultiplier", 2f);
+        animator.SetFloat("runMultiplier", 1.5f);
         isRunning = true;
     }
     private void ResetSpeed()

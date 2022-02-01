@@ -12,7 +12,7 @@ public class MoveLeft : MonoBehaviour
         {
             if (PlayerController.instance.isRunning)
             {
-                transform.Translate(Vector3.left * (speed * 2f) * Time.deltaTime);
+                transform.Translate(Vector3.left * (speed * 1.5f) * Time.deltaTime);
             }
             else
             {
@@ -22,6 +22,13 @@ public class MoveLeft : MonoBehaviour
         if (transform.position.x < leftBound && gameObject.CompareTag("Obstacle"))
         {
             Destroy(gameObject);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            ScoreManager.instance.IncreaseScore();
         }
     }
 }
