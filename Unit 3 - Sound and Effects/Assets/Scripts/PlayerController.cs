@@ -43,25 +43,27 @@ public class PlayerController : MonoBehaviour
     {
         CheckInput();
         CheckGround();
-        UpdateAnimation();
     }
     private void CheckInput()
     {
-        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && isGrounded && !gameOver)
+        if (GameMaster.instance.introPlayed)
         {
-            Jump();
-        }
-        else if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && !isGrounded && !isDoubleJumpUsed && !gameOver)
-        {
-            DoubleJump();
-        }
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.D))
-        {
-            Run();
-        }
-        if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.D))
-        {
-            ResetSpeed();
+            if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && isGrounded && !gameOver)
+            {
+                Jump();
+            }
+            else if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && !isGrounded && !isDoubleJumpUsed && !gameOver)
+            {
+                DoubleJump();
+            }
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.D))
+            {
+                Run();
+            }
+            if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.D))
+            {
+                ResetSpeed();
+            }
         }
     }
     private void Run()
@@ -98,12 +100,31 @@ public class PlayerController : MonoBehaviour
             explosionParticle.Play();
             dirtParticle.Stop();
             audioSource.PlayOneShot(crashSound, 1f);
+            animator.SetBool("Death_b", gameOver);
+            animator.SetInteger("DeathType_int", 1);
         }
     }
-    private void UpdateAnimation()
+    public void WalkAnimation()
     {
-        animator.SetBool("Death_b", gameOver);
-        animator.SetInteger("DeathType_int", 1);
+        if (!GameMaster.instance.introPlayed)
+        {
+            animator.SetFloat("Speed_f", 0.4f);
+        }
+        else
+        {
+            animator.SetFloat("Speed_f", 1f);
+        }
+    }
+    public void IdleAnimation()
+    {
+        if (!GameMaster.instance.introPlayed)
+        {
+            animator.SetFloat("Speed_f", 0f);
+        }
+    }
+    public void ResetAnimation()
+    {
+        animator.SetFloat("Speed_f", 1f);
     }
     private void CheckGround()
     {
@@ -112,6 +133,10 @@ public class PlayerController : MonoBehaviour
         if (!isGrounded && !gameOver)
         {
             dirtParticle.Play();
+        }
+        else if (!GameMaster.instance.introPlayed)
+        {
+            dirtParticle.Stop();
         }
     }
     private void OnDrawGizmos()

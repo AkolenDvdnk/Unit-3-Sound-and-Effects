@@ -8,27 +8,30 @@ public class MoveLeft : MonoBehaviour
 
     private void Update()
     {
-        if (!PlayerController.instance.gameOver)
+        if (GameMaster.instance.introPlayed)
         {
-            if (PlayerController.instance.isRunning)
+            if (!PlayerController.instance.gameOver)
             {
-                transform.Translate(Vector3.left * (speed * 1.5f) * Time.deltaTime);
+                if (PlayerController.instance.isRunning)
+                {
+                    transform.Translate(Vector3.left * (speed * 1.5f) * Time.deltaTime);
+                }
+                else
+                {
+                    transform.Translate(Vector3.left * speed * Time.deltaTime);
+                }
             }
-            else
+            if (transform.position.x < leftBound && gameObject.CompareTag("Obstacle"))
             {
-                transform.Translate(Vector3.left * speed * Time.deltaTime);
+                Destroy(gameObject);
             }
-        }
-        if (transform.position.x < leftBound && gameObject.CompareTag("Obstacle"))
-        {
-            Destroy(gameObject);
         }
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            ScoreManager.instance.IncreaseScore();
+            GameMaster.instance.IncreaseScore();
         }
     }
 }

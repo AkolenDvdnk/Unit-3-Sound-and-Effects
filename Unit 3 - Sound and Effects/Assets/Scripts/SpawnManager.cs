@@ -3,23 +3,27 @@
 public class SpawnManager : MonoBehaviour
 {
     public float startDelay;
-    public float repeatRate;
+    public float repeatRateMin;
+    public float repeatRateMax;
 
     public GameObject[] obstaclePrefabs;
 
-    private float maxSpawnPos = 30f;
-    private float minSpawnPos = 25f;
+    private float maxSpawnPos = 60f;
+    private float minSpawnPos = 50f;
     
     void Start()
     {
-        InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
+        InvokeRepeating("SpawnObstacle", startDelay, Random.Range(repeatRateMin, repeatRateMax));
     }
     private void SpawnObstacle()
     {
-        if (!PlayerController.instance.gameOver)
+        if (GameMaster.instance.introPlayed)
         {
-            Vector3 spawnPoint = new Vector3(Random.Range(minSpawnPos, maxSpawnPos), 0, transform.position.z);
-            Obstacle(spawnPoint);
+            if (!PlayerController.instance.gameOver)
+            {
+                Vector3 spawnPoint = new Vector3(Random.Range(minSpawnPos, maxSpawnPos), 0, transform.position.z);
+                Obstacle(spawnPoint);
+            }
         }
     }
     private GameObject Obstacle(Vector3 point)
