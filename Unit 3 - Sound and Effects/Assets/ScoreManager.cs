@@ -9,6 +9,12 @@ public class ScoreManager : MonoBehaviour
 
     private int score;
 
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = scoreText.gameObject.GetComponent<Animator>();
+    }
     private void Start()
     {
         instance = this;
@@ -16,6 +22,11 @@ public class ScoreManager : MonoBehaviour
     private void Update()
     {
         scoreText.text = "Score: " + score;
+
+        if (PlayerController.instance.gameOver)
+        {
+            animator.SetBool("GameOver", true);
+        }
     }
     public int IncreaseScore()
     {

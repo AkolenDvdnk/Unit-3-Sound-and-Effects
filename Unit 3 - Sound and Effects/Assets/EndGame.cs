@@ -1,18 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EndGame : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject panel;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (PlayerController.instance.gameOver)
+        {
+            panel.SetActive(true);
+        }
+
+        CheckInput();
+    }
+    public void CheckInput()
+    {
+        if (PlayerController.instance.gameOver)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+            if (Input.GetKeyDown(KeyCode.Escape))
+                Application.Quit();
     }
 }
