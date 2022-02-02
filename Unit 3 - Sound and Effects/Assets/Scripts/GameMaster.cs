@@ -6,10 +6,11 @@ public class GameMaster : MonoBehaviour
     public static GameMaster instance;
 
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI scoreTextEndGame;
+    public GameObject controlText;
 
     private int score;
 
-    private Animator textAnimator;
     private Transform player;
 
     [Header("Intro")]
@@ -19,10 +20,6 @@ public class GameMaster : MonoBehaviour
     public Vector3 endIntroPos;
     public bool introPlayed = false;
 
-    private void Awake()
-    {
-        textAnimator = scoreText.gameObject.GetComponent<Animator>();
-    }
     private void Start()
     {
         instance = this;
@@ -38,7 +35,9 @@ public class GameMaster : MonoBehaviour
 
         if (PlayerController.instance.gameOver)
         {
-            textAnimator.SetBool("GameOver", true);
+            scoreTextEndGame.text = scoreText.text;
+            scoreText.gameObject.SetActive(false);
+            scoreTextEndGame.gameObject.SetActive(true);
         }
     }
     public int IncreaseScore()
@@ -65,6 +64,7 @@ public class GameMaster : MonoBehaviour
             }
             return;
         }
+        controlText.SetActive(false);
         PlayerController.instance.ResetAnimation();
     }
 }
